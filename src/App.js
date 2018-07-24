@@ -1,10 +1,10 @@
 import React from 'react';
 import { Provider } from 'rendition';
-import Lighting from './component/Lighting';
+import MyNavbar from './component/MyNavbar';
 
 const App = () => (
   <Provider>
-    <Lighting />
+    <MyNavbar />
   </Provider>
 );
 
