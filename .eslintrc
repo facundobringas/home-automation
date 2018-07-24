@@ -1,0 +1,37 @@
+{
+    "parser": "babel-eslint",
+    "parserOptions": {
+          "ecmaVersion": 6,
+          "sourceType": "module",
+          "ecmaFeatures": {
+              "jsx": true
+          }
+      },
+    "extends": ["airbnb", "plugin:jest/recommended" ],
+    "plugins": ["react", "jsx-a11y", "import", "jest" ],
+    "rules": {
+      "strict":0,
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "react/forbid-prop-types":0,
+      "jest/no-disabled-tests": "warn",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/prefer-to-have-length": "warn",
+      "jest/valid-expect": "error",
+      "import/no-extraneous-dependencies": ["error", 
+        {"devDependencies": [
+          "**/test.js",
+          "test/*",
+          "webpack.config.js"
+          ]}],
+      "react/jsx-one-expression-per-line":0,
+      "implicit-arrow-linebreak":0
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "jest": true,
+      "jest/globals": true
+    }
+  }
+  
