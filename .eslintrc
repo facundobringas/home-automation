@@ -20,9 +20,8 @@
       "jest/valid-expect": "error",
       "import/no-extraneous-dependencies": ["error", 
         {"devDependencies": [
-          "**/test.js",
-          "test/*",
-          "webpack.config.js"
+          "**/*.test.js",
+          "**/setupTests.js"
           ]}],
       "react/jsx-one-expression-per-line":0,
       "implicit-arrow-linebreak":0
