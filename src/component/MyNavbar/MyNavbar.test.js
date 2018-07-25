@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Container, DropDownButton } from 'rendition';
-import MyNavbar from './index';
+import MyNavbar from '.';
 
 test('renders without crashing', () => {
   shallow(<MyNavbar />);
