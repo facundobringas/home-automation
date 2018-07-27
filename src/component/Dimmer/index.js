@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { space } from 'styled-system';
 import { Txt, Heading } from 'rendition';
+import isEqual from 'lodash.isequal';
+import brightnessIcon from '../../assets/brightness.png';
 
 const Brightness = styled.div`
   color: white;
@@ -24,12 +26,22 @@ const Center = styled.div`
 
 const Canvas = styled.canvas`
   ${space};
-  @media (max-width: 52em) {
+  @media (max-width: 60em) {
+    margin-left: -2em;
+  }
+  @media (max-width: 48em) {
+    margin-left: 9em;
+  }
+  @media (max-width: 35em) {
     margin-left: 5em;
   }
   @media (max-width: 30em) {
     margin-left: 1em;
   }
+  background: url('${brightnessIcon}');
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: center 7em;
 `;
 
 const Figure = styled.figure`
@@ -83,7 +95,7 @@ class Dimmer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { device } = this.props;
-    if (nextProps.device.id !== device.id) {
+    if (!isEqual(nextProps.device, device)) {
       this.setState({ target: nextProps.device.brightness * 2.5 });
     }
   }
@@ -101,8 +113,9 @@ class Dimmer extends React.Component {
     this.setState({ mDown: false });
     const { updateDevice, device } = this.props;
     const { target } = this.state;
+    const brightness = Math.ceil(target / 2.5);
     if (this.hasDevice()) {
-      updateDevice({ ...device, brightness: Math.ceil(target / 2.5) });
+      updateDevice({ ...device, brightness, active: brightness > 0 });
     }
   }
 
@@ -187,7 +200,7 @@ class Dimmer extends React.Component {
     return this.ctx.restore();
   }
 
-  drawShadow() {
+  drawShadow(first) {
     this.ctx.save();
     this.ctx.translate(this.centerX, this.centerY);
     this.ctx.rotate(145 * (Math.PI / 180));
@@ -201,6 +214,10 @@ class Dimmer extends React.Component {
     this.ctx.beginPath();
     this.ctx.lineWidth = 10;
     this.ctx.strokeStyle = '#727375';
+    if (first) {
+      this.ctx.shadowBlur = 20;
+      this.ctx.shadowColor = 'black';
+    }
     this.ctx.arc(x, y, radius, 0, (this.maxAngle * Math.PI) / 180, false);
     this.ctx.stroke();
     return this.ctx.restore();
@@ -212,7 +229,7 @@ class Dimmer extends React.Component {
     this.$progress.style.height = this.canvasSize;
     this.$progress.style.width = this.canvasSize;
     const endAngle = target / 180;
-    this.drawShadow(endAngle, first);
+    this.drawShadow(first);
     this.drawLine(first ? device.brightness * 2.5 / 180 : endAngle);
   }
 
@@ -246,8 +263,8 @@ class Dimmer extends React.Component {
         </div>
         <Canvas className="progress" width="300" height="300" />
         <Brightness width={[1]}>
-          <Heading>{ target ? `${Math.ceil(target / 2.5)}%` : ''}</Heading>
-          <Txt>{ this.hasDevice() ? 'Brightness' : ''}</Txt>
+          <Heading>{ target ? `${Math.ceil(target / 2.5)}%` : '0%'}</Heading>
+          <Txt>Brightness</Txt>
         </Brightness>
       </Figure>
     );

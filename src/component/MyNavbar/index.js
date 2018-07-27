@@ -10,7 +10,7 @@ const MyNavbarContainer = styled.header`
   justify-content: space-between;
   ${color};
   height: 4em;
-  @media (max-width: 52em) {
+  @media (max-width: 40em) {
     display: none;
   }
 `;
