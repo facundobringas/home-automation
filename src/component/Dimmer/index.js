@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { space } from 'styled-system';
-import { Txt, Heading } from 'rendition';
+import { Txt, Heading, Input } from 'rendition';
 import isEqual from 'lodash.isequal';
 import brightnessIcon from '../../assets/brightness.png';
 
@@ -55,6 +55,26 @@ const Wrapper = styled.div`
   ${space};
 `;
 
+const DeviceNameInput = styled(Input)`
+  border: 0;
+  background: transparent;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  margin-top: -8px;
+  margin-bottom: -4px;
+
+  &:active,
+  &:focus,  
+  &:hover {
+    outline: none;
+    border:0;
+  }
+`;
+
 const map = (value, low1, high1, low2, high2) =>
   low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
 
@@ -96,7 +116,10 @@ class Dimmer extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { device } = this.props;
     if (!isEqual(nextProps.device, device)) {
-      this.setState({ target: nextProps.device.brightness * 2.5 });
+      this.setState({
+        target: nextProps.device.brightness * 2.5,
+        deviceName: nextProps.device.name,
+      });
     }
   }
 
@@ -156,6 +179,16 @@ class Dimmer extends React.Component {
     }
   }
 
+  handleNameChange = (evt) => {
+    this.setState({ deviceName: evt.target.value });
+    const { device, updateDevice } = this.props;
+    clearTimeout(this.onChangeTimeout);
+    this.onChangeTimeout = setTimeout(() => {
+      const { deviceName } = this.state;
+      updateDevice({ ...device, name: deviceName });
+    }, 400);
+  };
+
   initVariables() {
     this.$context = getElement('.dimmer');
     this.$body = getElement('body');
@@ -177,7 +210,9 @@ class Dimmer extends React.Component {
     const { target } = this.state;
     const normalizedTarget = map(target, 0, this.maxAngle, 0, 1);
     const gray = parseInt(normalizedTarget * 255, 10);
-    getElement('.dimmerBox').style.background = `#000 radial-gradient(ellipse at center, #8c8f95 0%, rgb(${gray},${gray},${gray}) 100%) center center no-repeat`;
+    getElement(
+      '.dimmerBox',
+    ).style.background = `#000 radial-gradient(ellipse at center, #8c8f95 0%, rgb(${gray},${gray},${gray}) 100%) center center no-repeat`;
   }
 
   drawLine(endAngle) {
@@ -195,7 +230,7 @@ class Dimmer extends React.Component {
     this.ctx.shadowBlur = 10;
     this.ctx.lineWidth = 10;
     this.ctx.strokeStyle = gradient;
-    this.ctx.arc(x, y, radius, 0, (endAngle * Math.PI), false);
+    this.ctx.arc(x, y, radius, 0, endAngle * Math.PI, false);
     this.ctx.stroke();
     return this.ctx.restore();
   }
@@ -230,7 +265,7 @@ class Dimmer extends React.Component {
     this.$progress.style.width = this.canvasSize;
     const endAngle = target / 180;
     this.drawShadow(first);
-    this.drawLine(first ? device.brightness * 2.5 / 180 : endAngle);
+    this.drawLine(first ? (device.brightness * 2.5) / 180 : endAngle);
   }
 
   addEventListeners() {
@@ -249,13 +284,16 @@ class Dimmer extends React.Component {
   }
 
   render() {
-    const { device } = this.props;
-    const { target } = this.state;
+    const { target, deviceName } = this.state;
     return (
       <Figure className="dimmer">
         <Wrapper className="wrapper" mt={3}>
           <Center className="center">
-            <Heading.h4>{ this.hasDevice() ? device.name : 'Select a device'}</Heading.h4>
+            {this.hasDevice() ? (
+              <DeviceNameInput value={deviceName} onChange={this.handleNameChange} />
+            ) : (
+              <Heading.h4>Select a device</Heading.h4>
+            )}
           </Center>
         </Wrapper>
         <div className="circle">
@@ -263,7 +301,7 @@ class Dimmer extends React.Component {
         </div>
         <Canvas className="progress" width="300" height="300" />
         <Brightness width={[1]}>
-          <Heading>{ target ? `${Math.ceil(target / 2.5)}%` : '0%'}</Heading>
+          <Heading>{target ? `${Math.ceil(target / 2.5)}%` : '0%'}</Heading>
           <Txt>Brightness</Txt>
         </Brightness>
       </Figure>

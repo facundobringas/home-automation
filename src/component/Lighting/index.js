@@ -1,14 +1,12 @@
-import React from 'react';
-import {
-  Box, Table, Flex, Alert, Button, Heading, Container,
-} from 'rendition';
-import styled from 'styled-components';
-import isEqual from 'lodash.isequal';
-import Dimmer from '../Dimmer';
-import lightAPI from '../../service/lightAPI';
-import lamp from '../../assets/lamp.png';
-import arrow from '../../assets/baseline-arrow_back-24px.svg';
-import './index.css';
+import React from "react";
+import { Box, Table, Flex, Alert, Button, Heading, Container } from "rendition";
+import styled from "styled-components";
+import isEqual from "lodash.isequal";
+import Dimmer from "../Dimmer";
+import lightAPI from "../../service/lightAPI";
+import lamp from "../../assets/lamp.png";
+import arrow from "../../assets/baseline-arrow_back-24px.svg";
+import "./index.css";
 
 const StaticButton = styled(Button)`
   background: url('${lamp}');
@@ -38,33 +36,43 @@ const ScrollableBox = styled(Box)`
   }
 `;
 
+const DimmerBox = styled(Box)`
+  background: #3b3c41;
+  min-height: 400px;
+  border-radius: 5px;
+`;
+
 class Lighting extends React.Component {
   columns = [
     {
-      label: 'Name',
-      field: 'name',
-      sortable: true,
+      label: "Name",
+      field: "name",
+      render: name => <strong>{name}</strong>,
+      sortable: true
     },
     {
-      label: 'Status',
-      field: 'active',
+      label: "Status",
+      field: "active",
       render: (active, device) => (
-        <label className="switch" htmlFor={`check_${device.id}`}>
-          <input
-            id={`check_${device.id}`}
-            type="checkbox"
-            checked={device.active}
-            onChange={this.handleCheck}
-          />
-          <span className="slider round" />
-        </label>
-      ),
+        <div>
+          <label className="switch" htmlFor={`check_${device.id}`}>
+            <input
+              id={`check_${device.id}`}
+              type="checkbox"
+              checked={device.active}
+              onChange={this.handleCheck}
+            />
+            <span className="slider round" />
+          </label>
+          <span className="activeSpan">{active ? "On" : "Off"}</span>
+        </div>
+      )
     },
     {
-      label: 'Brightness',
-      field: 'brightness',
-      render: value => `${value}%`,
-    },
+      label: "Brightness",
+      field: "brightness",
+      render: value => `${value}%`
+    }
   ];
 
   constructor(props) {
@@ -77,7 +85,7 @@ class Lighting extends React.Component {
     this.fetchDevices();
   }
 
-  onRowClick = (device) => {
+  onRowClick = device => {
     this.setState({ selected: device, dimming: true });
   };
 
@@ -85,7 +93,7 @@ class Lighting extends React.Component {
     this.setState({ dimming: false });
   };
 
-  updateDevice = (device) => {
+  updateDevice = device => {
     if (this.shouldUpdateDevice(device)) {
       lightAPI
         .updateDevice(device)
@@ -93,16 +101,19 @@ class Lighting extends React.Component {
           this.fetchDevices();
         })
         .catch(error =>
-          this.setState({ error: `Error while trying to update device: ${error.message}` }));
+          this.setState({
+            error: `Error while trying to update device: ${error.message}`
+          })
+        );
     }
   };
 
-  handleCheck = (evt) => {
+  handleCheck = evt => {
     const { selected } = this.state;
     this.updateDevice({
       ...selected,
       active: evt.target.checked,
-      brightness: evt.target.checked ? 100 : 0,
+      brightness: evt.target.checked ? 100 : 0
     });
     this.setState({ dimming: false });
   };
@@ -116,23 +127,26 @@ class Lighting extends React.Component {
     const { selected } = this.state;
     lightAPI
       .getDevices()
-      .then((json) => {
+      .then(json => {
         const { data } = json;
         this.setState({
           data,
-          selected: selected.id ? data.find(item => item.id === selected.id) : {},
+          selected: selected.id
+            ? data.find(item => item.id === selected.id)
+            : {}
         });
       })
       .catch(error =>
-        this.setState({ error: `Error while trying to get devices: ${error.message}` }));
+        this.setState({
+          error: `Error while trying to get devices: ${error.message}`
+        })
+      );
   }
 
   render() {
-    const {
-      data, selected, dimming, error,
-    } = this.state;
+    const { data, selected, dimming, error } = this.state;
     return (
-      <Container p={0} style={{ overflow: 'hidden' }}>
+      <Container p={0} style={{ overflow: "hidden" }}>
         <Flex>
           {dimming ? (
             <DinamicButton m={2} emphasized square onClick={this.backPressed} />
@@ -141,17 +155,24 @@ class Lighting extends React.Component {
           )}
           <Heading.h4 my={3}>Lighting</Heading.h4>
         </Flex>
-        <FlexWrap style={{ overflow: 'hidden' }}>
+        <FlexWrap style={{ overflow: "hidden" }}>
           <ScrollableBox width={[dimming ? 0 : 1, dimming ? 0 : 1, 5 / 8]}>
             {error ? (
-              <Alert danger>{error}</Alert>
+              <Alert danger w={9 / 10}>
+                {error}
+              </Alert>
             ) : (
-              <Table columns={this.columns} data={data} rowKey="id" onRowClick={this.onRowClick} />
+              <Table
+                columns={this.columns}
+                data={data}
+                rowKey="id"
+                onRowClick={this.onRowClick}
+              />
             )}
           </ScrollableBox>
-          <Box className="dimmerBox" bg="#3b3c41" width={[dimming ? 1 : 0, dimming ? 1 : 0, 3 / 8]}>
+          <DimmerBox width={[dimming ? 1 : 0, dimming ? 1 : 0, 3 / 8]}>
             <Dimmer device={selected} updateDevice={this.updateDevice} />
-          </Box>
+          </DimmerBox>
         </FlexWrap>
       </Container>
     );
