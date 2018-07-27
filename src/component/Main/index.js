@@ -1,14 +1,16 @@
 import React from 'react';
-import { Container, Heading } from 'rendition';
+import { Container } from 'rendition';
+import styled from 'styled-components';
 import Lighting from '../Lighting';
 
+const MainContainer = styled(Container)`
+  padding: 0;
+`;
+
 const Main = () => (
-  <Container mx={10}>
-    <Container width="90%" height="25px" m={20}>
-      <Heading.h3>Lighting</Heading.h3>
-    </Container>
+  <MainContainer>
     <Lighting />
-  </Container>
+  </MainContainer>
 );
 
 export default Main;

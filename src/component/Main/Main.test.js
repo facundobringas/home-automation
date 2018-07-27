@@ -1,12 +1,12 @@
 /* globals React, shallow */
-import { Container } from 'rendition';
+import Lighting from '../Lighting';
 import Main from '.';
 
 test('renders without crashing', () => {
   shallow(<Main />);
 });
 
-test('renders a Container component', () => {
+test('renders a Lighting component', () => {
   const wrapper = shallow(<Main />);
-  expect(wrapper.find(Container)).toHaveLength(2);
+  expect(wrapper.find(Lighting)).toHaveLength(1);
 });

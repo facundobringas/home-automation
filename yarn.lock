@@ -250,9 +250,9 @@
   dependencies:
     csstype "^2.2.0"
 
-"@types/recompose@^0.24.7":
-  version "0.24.7"
-  resolved "https://registry.yarnpkg.com/@types/recompose/-/recompose-0.24.7.tgz#8a62a76227053970476b208d859b70e398baabc5"
+"@types/recompose@^0.26.2":
+  version "0.26.2"
+  resolved "https://registry.yarnpkg.com/@types/recompose/-/recompose-0.26.2.tgz#761e46f39e5bc2a9640f29510a8d21a0a73dc2a7"
   dependencies:
     "@types/react" "*"
 
@@ -6713,6 +6713,12 @@ react-scripts@1.1.4:
   optionalDependencies:
     fsevents "^1.1.3"
 
+react-shallow-equal@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-shallow-equal/-/react-shallow-equal-0.1.1.tgz#7a8e317e42c3f9871c6e788426cbd6ed65390c63"
+  dependencies:
+    style-equal "^1.0.0"
+
 react-test-renderer@^16.0.0-0:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.4.1.tgz#f2fb30c2c7b517db6e5b10ed20bb6b0a7ccd8d70"
@@ -6936,9 +6942,9 @@ renderkid@^2.0.1:
     strip-ansi "^3.0.0"
     utila "~0.3"
 
-rendition@^4.18.8:
-  version "4.18.8"
-  resolved "https://registry.yarnpkg.com/rendition/-/rendition-4.18.8.tgz#25655c1245ccb6f55ba10f2854089e2087a0b792"
+rendition@^4.18.9:
+  version "4.18.9"
+  resolved "https://registry.yarnpkg.com/rendition/-/rendition-4.18.9.tgz#48362d4867101171b763c662b3bfd4f5773b64c7"
   dependencies:
     "@types/chart.js" "^2.7.14"
     "@types/color" "^2.0.0"
@@ -6951,7 +6957,7 @@ rendition@^4.18.8:
     "@types/react-dom" "^16.0.4"
     "@types/react-icons" "^2.2.4"
     "@types/react-jsonschema-form" "^1.0.0"
-    "@types/recompose" "^0.24.7"
+    "@types/recompose" "^0.26.2"
     "@types/uuid" "^3.4.3"
     ajv "^6.2.0"
     ajv-keywords "^3.1.0"
@@ -7619,6 +7625,10 @@ strip-indent@^1.0.1:
 strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
+
+style-equal@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/style-equal/-/style-equal-1.0.0.tgz#98a1c5922226bfe13c196e73f1940e91b8e66595"
 
 style-loader@0.19.0:
   version "0.19.0"
