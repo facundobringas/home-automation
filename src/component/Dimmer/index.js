@@ -255,7 +255,7 @@ class Dimmer extends React.Component {
       <Figure className="dimmer">
         <Wrapper className="wrapper" mt={3}>
           <Center className="center">
-            <Txt>{ this.hasDevice() ? device.name : 'Select a device'}</Txt>
+            <Heading.h4>{ this.hasDevice() ? device.name : 'Select a device'}</Heading.h4>
           </Center>
         </Wrapper>
         <div className="circle">

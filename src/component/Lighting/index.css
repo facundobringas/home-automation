@@ -39,7 +39,7 @@
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #4db312;
   }
   
   input:checked + .slider:before {
@@ -51,6 +51,12 @@
   /* Rounded sliders */
   .slider.round {
     border-radius: 34px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   
   .slider.round:before {

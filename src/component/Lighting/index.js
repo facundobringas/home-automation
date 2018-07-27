@@ -139,7 +139,7 @@ class Lighting extends React.Component {
           ) : (
             <StaticButton m={2} emphasized square onClick={this.backPressed} />
           )}
-          <Heading.h3 my={3}>Lighting</Heading.h3>
+          <Heading.h4 my={3}>Lighting</Heading.h4>
         </Flex>
         <FlexWrap style={{ overflow: 'hidden' }}>
           <ScrollableBox width={[dimming ? 0 : 1, dimming ? 0 : 1, 5 / 8]}>

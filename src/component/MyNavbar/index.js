@@ -3,6 +3,7 @@ import { DropDownButton, Container } from 'rendition';
 import styled from 'styled-components';
 import { color } from 'styled-system';
 import moment from 'moment';
+import Clock from '../Clock';
 
 const MyNavbarContainer = styled.header`
   display: flex;
@@ -37,7 +38,9 @@ const DropDownButtonItem = styled.div`
 const MyNavbar = () => (
   <MyNavbarContainer color="white" bg="black" width={[0, 1, 1]}>
     <LeftContainer>{moment().format('dddd DD MMMM, YYYY')}</LeftContainer>
-    <CenterContainer>{moment().format('hh:mm a')}</CenterContainer>
+    <CenterContainer>
+      <Clock />
+    </CenterContainer>
     <RightContainer>
       <DropDownButton bg="black" alignRight label="Name Surname" p={0}>
         <DropDownButtonItem>Profile</DropDownButtonItem>
