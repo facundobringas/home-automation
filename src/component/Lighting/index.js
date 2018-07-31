@@ -7,6 +7,8 @@ import lightAPI from "../../service/lightAPI";
 import lamp from "../../assets/lamp.png";
 import arrow from "../../assets/baseline-arrow_back-24px.svg";
 import "./index.css";
+import { connect } from 'react-redux';
+import { updateDevice, selectDevice } from '../../store/action/deviceActionCreators';
 
 const StaticButton = styled(Button)`
   background: url('${lamp}');
@@ -66,13 +68,13 @@ class Lighting extends React.Component {
           </label>
           <span className="activeSpan">{active ? "On" : "Off"}</span>
         </div>
-      )
+      ),
     },
     {
       label: "Brightness",
       field: "brightness",
-      render: value => `${value}%`
-    }
+      render: value => `${value}%`,
+    },
   ];
 
   constructor(props) {
@@ -81,70 +83,42 @@ class Lighting extends React.Component {
     this.state = { data: [], selected: {} };
   }
 
-  componentDidMount() {
-    this.fetchDevices();
-  }
-
-  onRowClick = device => {
-    this.setState({ selected: device, dimming: true });
+  onRowClick = (device) => {
+    const { selectDevice } = this.props;
+    selectDevice(device.id);
   };
 
   backPressed = () => {
     this.setState({ dimming: false });
   };
 
-  updateDevice = device => {
+  updateDevice = (device) => {
+    const { updateDevice } = this.props;
     if (this.shouldUpdateDevice(device)) {
-      lightAPI
-        .updateDevice(device)
-        .then(() => {
-          this.fetchDevices();
-        })
-        .catch(error =>
-          this.setState({
-            error: `Error while trying to update device: ${error.message}`
-          })
-        );
+        updateDevice(device);
     }
   };
 
-  handleCheck = evt => {
-    const { selected } = this.state;
+  handleCheck = (evt) => {
+    const { data, selected } = this.props;
+    const selectedDevice = data.find(device=>device.id===selected);
     this.updateDevice({
-      ...selected,
+      ...selectedDevice,
       active: evt.target.checked,
-      brightness: evt.target.checked ? 100 : 0
+      brightness: evt.target.checked ? 100 : 0,
     });
     this.setState({ dimming: false });
   };
 
   shouldUpdateDevice(device) {
-    const { selected } = this.state;
+    const { selected } = this.props;
     return !isEqual(device, selected);
   }
 
-  fetchDevices() {
-    const { selected } = this.state;
-    lightAPI
-      .getDevices()
-      .then(json => {
-        const { data } = json;
-        this.setState({
-          data,
-          selected: selected.id
-            ? data.find(item => item.id === selected.id)
-            : {}
-        });
-      })
-      .catch(error =>
-        this.setState({
-          error: `Error while trying to get devices: ${error.message}`
-        })
-      );
-  }
-
   render() {
-    const { data, selected, dimming, error } = this.state;
+    const { dimming, error } = this.state;
+    const { data, selected } = this.props;
+    const selectedDevice = data.find(device=>device.id===selected);
     return (
       <Container p={0} style={{ overflow: "hidden" }}>
         <Flex>
@@ -171,7 +145,7 @@ class Lighting extends React.Component {
             )}
           </ScrollableBox>
           <DimmerBox width={[dimming ? 1 : 0, dimming ? 1 : 0, 3 / 8]}>
-            <Dimmer device={selected} updateDevice={this.updateDevice} />
+            <Dimmer device={selectedDevice || {}} updateDevice={this.updateDevice} />
           </DimmerBox>
         </FlexWrap>
       </Container>
@@ -179,4 +153,13 @@ class Lighting extends React.Component {
   }
 }
 
-export default Lighting;
+const mapStateToProps = state => ({
+  ...state.devices,
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateDevice: device => dispatch(updateDevice(device)),
+  selectDevice: device => dispatch(selectDevice(device)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Lighting);
