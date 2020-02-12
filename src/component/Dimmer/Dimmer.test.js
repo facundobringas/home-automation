@@ -1,6 +1,6 @@
 /* globals React, shallow */
 import Dimmer from '.';
-import { Provider } from 'react-redux';
+import { Provider } from 'rendition';
 import {store} from '../../store/store'
 
 // Mock
