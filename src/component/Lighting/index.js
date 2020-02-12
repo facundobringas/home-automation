@@ -3,7 +3,7 @@ import { Box, Table, Flex, Alert, Button, Heading, Container } from "rendition";
 import styled from "styled-components";
 import isEqual from "lodash.isequal";
 import Dimmer from "../Dimmer";
-import lightAPI from "../../service/lightAPI";
+//import lightAPI from "../../service/lightAPI";
 import lamp from "../../assets/lamp.png";
 import arrow from "../../assets/baseline-arrow_back-24px.svg";
 import "./index.css";
