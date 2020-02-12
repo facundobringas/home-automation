@@ -1,4 +1,4 @@
-# Home Automation Assigment
+# Home Automation Hub
 
 Developed using Node v9.5.0
 
