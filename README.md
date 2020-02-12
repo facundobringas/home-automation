@@ -15,23 +15,7 @@ Or using yarn
 $ yarn install
 ```
 
-Configure Light API url in .env file:
-```sh
-REACT_APP_SERVER_URL=http://localhost:3000/api/v1
-```
-### Remember
-
-When testing on Mobile devices *localhost* won't work. You'll have to change this url to the adress where Light API is on the network.
-IP in case of local network:
-```sh
-REACT_APP_SERVER_URL=http://192.168.1.1:3000/api/v1
-```
-Or any address on the internet:
-```sh
-REACT_APP_SERVER_URL=http://light-api.resin.io:3000/api/v1
-```
-
-Starting server on development mode:
+To start in development mode:
 
 ```sh
 $ yarn start
@@ -58,7 +42,7 @@ I'm packaging also Vscode folder with settings for auto-formatting features usin
 CRA comes with Jest but lacks of a this great testing library for React components.
 
 ### 3. Rendition, styled-system and styled-components.
-I've never worked nor did know about them before. Thanks for that! This is what I like of accepting these challenges, nevermind whether I'm selected or not I end up learning quite a lot in the process. Studiyng these may have delayed just a bit the execution though it was worthy. 
+I've never worked nor did know about them before. 
 #### 3.1  
 I confess I experienced some minor difficulties trying to customize style: Navbar component had  this [issue](https://github.com/resin-io-modules/rendition/issues/524) that apparently was fixed but not merged to the time I deliver the task. I decided not to wait and developed a custom Navbar (MyNavbar). 
 #### 3.2

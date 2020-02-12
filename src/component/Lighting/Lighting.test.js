@@ -1,11 +1,10 @@
 /* globals React, shallow */
 import { Table } from 'rendition';
 import Lighting from '.';
+import { Provider } from 'rendition';
+import {store} from '../../store/store'
 
 test('renders without crashing', () => {
-  shallow(<Lighting />);
+  shallow(<Provider store={store}><Lighting /></Provider>);
 });
-test('renders a Table component', () => {
-  const wrapper = shallow(<Lighting />);
-  expect(wrapper.find(Table)).toHaveLength(1);
-});
+

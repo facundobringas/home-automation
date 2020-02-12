@@ -1,5 +1,7 @@
 /* globals React, shallow */
 import Dimmer from '.';
+import { Provider } from 'react-redux';
+import {store} from '../../store/store'
 
 // Mock
 const mockDocument = {
@@ -30,14 +32,6 @@ Object.defineProperty(window, 'document', {
 });
 // Tests
 test('renders without crashing', () => {
-  shallow(<Dimmer device={{}} updateDevice={jest.fn()} />);
+  shallow(<Provider store={store}><Dimmer device={{}} updateDevice={jest.fn()} /></Provider>);
 });
 
-test('receives props', () => {
-  const props = {
-    device: { name: 'Device', active: true, brightness: 70 },
-    updateDevice: jest.fn(),
-  };
-  const wrapped = shallow(<Dimmer {...props} />);
-  expect(wrapped.instance().props).toEqual(props);
-});
